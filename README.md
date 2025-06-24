@@ -44,10 +44,10 @@ Scatch is a full-featured e-commerce web application for buying and managing bag
 ![Contact Us Page](assets/contact-us-page.png)
 
 ### 🗂️ Contact Messages Database
-![Contact Messages DB](assets/contact-us-massage-database-page.png)
+![Contact Messages DB](assets/contact-us-massege-database-page.png)
 
 ### 🔐 Admin Role/User Management DB
-![Admin DB](assets/1admin-database.png)
+![Admin DB](assets/admin-database.png)
 
 SCATCH/
 ├── client/ # React frontend
