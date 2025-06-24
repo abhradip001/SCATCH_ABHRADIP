@@ -1,0 +1,114 @@
+<%- include('./partials/header') %>
+<div class="flex-1 flex flex-col pt-16">
+    <%
+    let hasItems = false;
+    let grandTotal = 0;
+    user.cart.forEach(function(item){
+        if (item.product) {
+            let qty = item.quantity || 1;
+            let price = Number(item.product.price) * qty;
+            let discount = (Number(item.product.discount) || 0) * qty;
+            let platformFee = 20;
+            let shippingFee = (Number(item.product.price) > 1000) ? 0 : 50;
+            let netTotal = (price - discount) + platformFee + shippingFee;
+            grandTotal += netTotal;
+            hasItems = true;
+        }
+    });
+    %>
+    <% if (hasItems) { %>
+        <div>
+            <div class="w-full flex justify-start px-20 pt-10">
+                <div class="text-3xl font-extrabold text-green-700 border-b-4 border-green-700 pb-2 mb-10 w-fit">
+                    Grand Total: ₹ <%= grandTotal %>
+                </div>
+            </div>
+            <% user.cart.forEach(function(item){
+                if (item.product) {
+                    let qty = item.quantity || 1;
+                    let price = Number(item.product.price) * qty;
+                    let discount = (Number(item.product.discount) || 0) * qty;
+                    let platformFee = 20;
+                    let shippingFee = (Number(item.product.price) > 1000) ? 0 : 50;
+                    let netTotal = (price - discount) + platformFee + shippingFee;
+            %>
+            <div class="w-full flex items-start px-20 py-20 gap-10">
+                <!-- Left: Product Info -->
+                <div class="w-[30%] rounded-md overflow-hidden bg-white shadow">
+                    <div class="w-full h-80 flex justify-center items-center <% if(item.product.bgcolor){ %>bg-[<%= item.product.bgcolor %>]<% } else { %>bg-yellow-500<% } %>">
+                        <% if (item.product.image) { %>
+                            <img class="h-48 object-cover" src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>" alt="">
+                        <% } else { %>
+                            <div class="h-48 flex items-center justify-center text-gray-400">No image</div>
+                        <% } %>
+                    </div>
+                    <div class="w-full flex justify-between px-5 py-4">
+                        <h3 class="text-2xl"><%= item.product.name %></h3>
+                        <div class="flex items-center gap-2">
+                            <!-- Decrease quantity -->
+                            <form action="/cart/decrease/<%= item.product._id %>" method="post" style="display:inline;">
+                                <button type="submit" class="w-7 h-7 bg-white flex rounded-full items-center justify-center">
+                                    <i class="ri-subtract-line"></i>
+                                </button>
+                            </form>
+                            <div class="px-2 py-1 rounded-md bg-white text-black"><%= qty %></div>
+                            <!-- Increase quantity -->
+                            <form action="/cart/increase/<%= item.product._id %>" method="post" style="display:inline;">
+                                <button type="submit" class="w-7 h-7 bg-white flex rounded-full items-center justify-center">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between px-5 py-3">
+                        <h4 class="text-lg">Net Total</h4>
+                        <h2 class="text-lg">₹ <%= netTotal %></h2>
+                    </div>
+                    <form action="/cart/delete/<%= item.product._id %>" method="post" style="display:inline;">
+                        <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 w-full mt-2">Remove</button>
+                    </form>
+                </div>
+                <!-- Right: Price Breakdown -->
+                <div class="w-[70%] bg-white shadow rounded-md p-8">
+                    <h3 class="text-xl mb-4">Price Breakdown</h3>
+                    <div class="px-4">
+                        <div class="flex mt-2">
+                            <h4 class="w-1/3">Total MRP</h4>
+                            <h4>₹ <%= price %></h4>
+                        </div>
+                        <div class="flex mt-2">
+                            <h4 class="w-1/3">Discount on MRP</h4>
+                            <h4>₹ <%= discount %></h4>
+                        </div>
+                        <div class="flex mt-2">
+                            <h4 class="w-1/3">Platform Fee</h4>
+                            <h4>₹ <%= platformFee %></h4>
+                        </div>
+                        <div class="flex mt-2">
+                            <h4 class="w-1/3">Shipping Fee</h4>
+                            <h4>
+                                <% if (shippingFee === 0) { %>
+                                    FREE
+                                <% } else { %>
+                                    ₹ <%= shippingFee %>
+                                <% } %>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="w-full h-[1px] bg-black mt-10"></div>
+                    <div class="flex mt-5">
+                        <h3 class="w-1/3 text-xl">Total Amount</h3>
+                        <h3 class="font-semibold text-xl text-green-600">₹ <%= netTotal %></h3>
+                    </div>
+                </div>
+            </div>
+            <%  } // end if %>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="flex-1 flex items-center justify-center">
+            <div class="text-center text-2xl text-gray-500">Your cart is empty.</div>
+        </div>
+    <% } %>
+</div>
+<%- include('./partials/footer') %>

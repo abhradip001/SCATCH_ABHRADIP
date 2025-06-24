@@ -1,0 +1,47 @@
+<%- include('./partials/header') %>
+<div class="w-full min-h-screen flex items-start px-20 py-20">
+    <div class="w-[25%] flex flex-col items-start">
+        <div class="flex flex-col">
+            <a class="block w-fit mb-2" href="/admin">All Products</a>
+            <a class="block w-fit mb-2" href="/products/create">Create new product</a>
+        </div>
+    </div>
+    <div class="w-[75%] flex flex-col gap-5">
+        <form action="/admin/delete-all" method="post">
+            <button class="text-red-500 mb-4" type="submit">Delete all</button>
+        </form>
+        <div class="flex flex-wrap gap-5">
+            <% products.forEach(product => { %>
+                <!-- SWAPPED: panelcolor is now card background, bgcolor is now image panel background -->
+                <div class="w-60 rounded overflow-hidden shadow" style="background:<%= product.panelcolor %>;">
+                    <div class="w-full h-52 flex items-center justify-center" style="background:<%= product.bgcolor %>;">
+                        <% if (product.image) { %>
+                            <img 
+                                src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" 
+                                class="h-44 w-44 object-contain" 
+                                style="max-width:100%;max-height:100%;" 
+                            />
+                        <% } %>
+                    </div>
+                    <div class="flex justify-between items-center px-4 py-4" style="color:<%= product.textcolor %>;">
+                        <div>
+                            <h3><%= product.name %></h3>
+                            <h4>₹ <%= product.price %></h4>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="/admin/edit/<%= product._id %>" class="w-7 h-7 flex items-center justify-center rounded-full bg-blue-500 text-white" title="Edit">
+                                <i class="ri-edit-line"></i>
+                            </a>
+                            <form action="/admin/delete/<%= product._id %>" method="post">
+                                <button class="w-7 h-7 flex items-center justify-center rounded-full bg-white text-red-500" type="submit" title="Delete">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+<%- include('./partials/footer') %>

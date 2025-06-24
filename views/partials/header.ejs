@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-['helvetica_now_display'] min-h-screen flex flex-col">
+    <nav class="w-full flex justify-between px-5 py-3 fixed top-0 left-0 z-50 bg-white shadow">
+        <a class="text-xl" href="/shop">Scatch</a>
+        <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true; %>
+        <% if (loggedin) { %>
+            <div class="flex gap-5">
+                <% if (user && user.role === 'admin') { %>
+                    <a href="/admin">Admin</a>
+                <% } %>
+                <a href="/shop">Shop</a>
+                <a href="/cart">Cart</a>
+                <a href="/myaccount">My Account</a>
+                <a class="text-red-600" href="/logout">Logout</a>
+            </div>
+        <% } %>
+    </nav>
+    <!-- Add padding to your main content in your page EJS files:
+        <div class="pt-16"> ... </div>
+         (Assuming header height is about 64px = 16 * 4px) -->
+</body>
+</html>

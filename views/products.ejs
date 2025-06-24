@@ -1,0 +1,22 @@
+<%- include('./partials/header') %>
+
+<% if(success && success.length > 0){ %>
+    <div class="alert alert-success">
+        <%= success %>
+    </div>
+<% } %>
+
+<div class="product-list">
+    <% products.forEach(function(product){ %>
+        <div class="product-card">
+            <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" />
+            <div><%= product.name %></div>
+            <div>₹ <%= product.price %></div>
+            <!-- Add more fields as needed -->
+        </div>
+    <% }) %>
+</div>
+
+<%- include('./partials/footer') %>
+
+ 
